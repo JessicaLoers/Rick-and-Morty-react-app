@@ -1,14 +1,12 @@
 import Characters from './pages/Characters'
-import Favourites from './pages/Favourites'
+// import Favourites from './pages/Favourites'
 import RickMorty from './images/Rick_And_Morty.svg'
 import styled from 'styled-components'
 import { Link, NavLink, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { loadFromLocal, saveToLocal } from './lib/localStorage'
 
-
 function App() {
-
   useEffect(() => {
     fetch('https://rickandmortyapi.com/api/character')
       .then((response) => response.json())
@@ -28,56 +26,67 @@ function App() {
       })
   }, [])
 
-  const localStorageFavouriteCharacters = loadFromLocal('_isFavouriteCharacters')
+  const localStorageFavouriteCharacters = loadFromLocal(
+    '_isFavouriteCharacters'
+  )
   const [favouriteCharacters, setFavouriteCharacters] = useState(
-    localStorageFavouriteCharacters ?? [])
+    localStorageFavouriteCharacters ?? []
+  )
 
   useEffect(() => {
-    saveToLocal('_favouriteCharacters', favouriteCharacters);
-  }, [favouriteCharacters]);
+    saveToLocal('_favouriteCharacters', favouriteCharacters)
+  }, [favouriteCharacters])
 
-
-  const localStorageCharacters = loadFromLocal('_characters');
-  const [characters, setCharacters] = useState( localStorageCharacters ??[])
+  const localStorageCharacters = loadFromLocal('_characters')
+  const [characters, setCharacters] = useState(localStorageCharacters ?? [])
 
   useEffect(() => {
-    saveToLocal('_characters', characters);
-  }, [characters]);
-
+    saveToLocal('_characters', characters)
+  }, [characters])
 
   function isCharacterInListOfFavourites(favouriteCharacterToAdd) {
     return favouriteCharacters.some(
       (everyFavouriteProduct) =>
         everyFavouriteProduct.id === favouriteCharacterToAdd.id
-    );
+    )
   }
 
   function removeCharacterFromListOfFavourites(character) {
     return favouriteCharacters.filter(
       (everyFavouriteProduct) => everyFavouriteProduct.id !== character.id
-    );
+    )
   }
 
   function addToFavourites(favouriteCharacterToAdd) {
     if (isCharacterInListOfFavourites(favouriteCharacterToAdd)) {
       const favouritesToKeep = removeCharacterFromListOfFavourites(
         favouriteCharacterToAdd
-      );
-      setFavouriteCharacters(favouritesToKeep);
+      )
+      setFavouriteCharacters(favouritesToKeep)
     } else {
-      setFavouriteCharacters([...favouriteCharacters, favouriteCharacterToAdd]);
+      setFavouriteCharacters([...favouriteCharacters, favouriteCharacterToAdd])
     }
   }
 
-
-console.log(isCharacterInListOfFavourites(characters))
-
-
+  function setupCharacter(char) {
+   return  <Characters
+      char={char}
+      key={char.id}
+      id={char.id}
+      name={char.name}
+      species={char.species}
+      image={char.image}
+      gender={char.gender}
+      status={char.status}
+      origin={char.origin}
+      location={char.location}
+      onAddToFavourites={addToFavourites}
+      isFavouriteCharacters={isCharacterInListOfFavourites}
+    />
+  }
 
   return (
     <div className='App'>
-      {/* header --> Characters und Favs, Home  */}
-
       <header>
         <Link to='/home'>
           <RickMortyLogo
@@ -85,54 +94,30 @@ console.log(isCharacterInListOfFavourites(characters))
             alt='Title Treatment from Rick and Morty©'
           />
         </Link>
-        
+
         <NavLink to='characters'>Characters</NavLink>
         <NavLink to='favourites'>Favourites</NavLink>
-    
       </header>
 
-<Routes>
-<Route path="characters" element={characters.map((char) => (
-        <Characters
-          char={char}
-          key={char.id}
-          id={char.id}
-          name={char.name}
-          species={char.species}
-          image={char.image}
-          gender={char.gender}
-          status={char.status}
-          origin={char.origin}
-          location={char.location}
-          onAddToFavourites={addToFavourites}
-          isFavouriteCharacters={isCharacterInListOfFavourites}
+      <Routes>
+
+        <Route
+          path='characters'
+          element={characters.map((char) => (
+           setupCharacter(char)
+          ))}
         />
-      ))} />
 
-
-
-<Route path="favourites" element={
-<Favourites
-/>}/>
-
-
-</Routes>      
-
+        <Route
+          path='favourites' 
+          element={favouriteCharacters.map((char) => (
+          setupCharacter(char)
+          ))}
+        />   
+      </Routes>
     </div>
-
-
   )
 }
-
-
-<>
-
-  </>
-
-
-
-
-
 
 export default App
 

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import CardInfo from '../components/MoreInfoCard'
 
 
+
 function Characters({
   char,
   name,
@@ -13,6 +14,9 @@ function Characters({
   isFavouriteCharacters,
 }) {
   const charHuman = species !== 'Alien'
+  const Favourite = isFavouriteCharacters
+
+
 
   return (
     <section>
@@ -20,10 +24,11 @@ function Characters({
         <CharName>{name}</CharName>
         <CharImage src={image} />
         <CardInfo gender={gender} status={status} species={species} />
+        <div>
         <span onClick={() => onAddToFavourites(char)}>
           {isFavouriteCharacters(char) ? 'yes' : 'no'}
         </span>
-
+      </div>
       </CharCard>
     </section>
   )
