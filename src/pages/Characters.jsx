@@ -14,8 +14,6 @@ function Characters({
   isFavouriteCharacters,
 }) {
   const charHuman = species !== 'Alien'
-  const Favourite = isFavouriteCharacters
-
 
 
   return (
@@ -24,11 +22,11 @@ function Characters({
         <CharName>{name}</CharName>
         <CharImage src={image} />
         <CardInfo gender={gender} status={status} species={species} />
-        <div>
+        <FavIcon>
         <span onClick={() => onAddToFavourites(char)}>
-          {isFavouriteCharacters(char) ? 'yes' : 'no'}
+          {isFavouriteCharacters(char) ? '💩' : '🫀'}
         </span>
-      </div>
+      </FavIcon>
       </CharCard>
     </section>
   )
@@ -58,4 +56,12 @@ const CharImage = styled.img`
 
 const CharName = styled.h2`
   text-align: center;
+`
+
+const FavIcon = styled.div `
+  cursor: pointer;
+  position: absolute;
+  font-size: 2.5rem;
+  margin-left: 22rem;
+
 `

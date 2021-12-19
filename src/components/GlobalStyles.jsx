@@ -14,7 +14,7 @@ export default createGlobalStyle`
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color:#e4a1e8;
+  background-color: var(--primary);
   color: var(--primary);
 }
 
